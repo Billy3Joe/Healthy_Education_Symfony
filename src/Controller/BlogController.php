@@ -17,7 +17,7 @@ class BlogController extends AbstractController
     #[Route('/blog', name: 'app_blog')]
     public function allArticles(): Response
     {
-        return $this->render('blog/index.html.twig', [
+        return $this->render('pages/blog/index.html.twig', [
             'controller_blog' => 'BlogController',
         ]);
     }
