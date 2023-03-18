@@ -137,20 +137,9 @@ class IngredientController extends AbstractController
     //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
     public function delete(
         Ingredient $ingredient, 
-        Request $request,
         EntityManagerInterface $manager 
     ) : Response 
     {
-       if (!$ingredient)
-        {
-            //Message flash (de confirmation) sur symfony
-            $this->addFlash(
-                'success',
-                'L\'ingrédient en question n'/'a pas été supprimé !'
-            );
-            //Rédirigeons l'utilisateur vers la page de tous les ingrédients
-            return $this->redirectToRoute('ingredient.index');
-       }
 
        $manager->remove($ingredient);
        $manager->flush();
