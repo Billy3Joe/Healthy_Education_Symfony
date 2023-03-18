@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class IngredientController extends AbstractController
 {
     /**
-     * This function display all ingredients
+     * This controller display all ingredients
      *
      * @param IngredientRepository $repository
      * @param PaginatorInterface $paginator
@@ -48,14 +48,22 @@ class IngredientController extends AbstractController
         ]);
     }
 
+    /**
+     *  This controller show a form with create an ingredient
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+
     //POST DATA IN DB
-    //Après avoir crée ingredientType avec la cde php bin/console make:form,
-    //on crée notre formulaire
+    //On a crée ingredientType (notre formulaire d'ingrédients) avec la cde php bin/console make:form,
     #[Route('/ingredient/nouveau', name: 'ingredient.new', methods:['GET', 'POST'])]
     public function new(
         Request $request,
-        EntityManagerInterface $manager
-        ) : Response {
+        EntityManagerInterface $manager 
+    ) : Response 
+    {
         //On crée un nouveau ingrédient
         $ingredients = new Ingredient();
         //On crée le formulaire d'ajout
@@ -78,11 +86,50 @@ class IngredientController extends AbstractController
                 'Votre ingrédient a été ajouté avec succes !'
             );
             //Rédirigeons l'utilisateur vers la page de tous les ingrédients
-            // $this->redirectToRoute('ingredient.index');
+           return $this->redirectToRoute('ingredient.index');
         }else {
             # code...
         }
         return $this->render('pages/ingredient/new.html.twig', [
+            'form' => $form->createView()
+         ]);
+    }
+
+    //UPDATE DATA IN DB
+    //On a crée ingredientType (notre formulaire d'ingrédients) avec la cde php bin/console make:form,
+    #[Route('/ingredient/edition/{id}', name: 'ingredient.edit', methods:['GET', 'POST'])]
+    //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
+    public function edit(
+        Ingredient $ingredient, 
+        Request $request,
+        EntityManagerInterface $manager 
+    ) : Response 
+    {
+        //On crée le formulaire
+        $form = $this->createForm(IngredientType::class, $ingredient);
+
+        $form->handleRequest($request);
+        // dd($form);
+    if ($form->isSubmitted() && $form->isValid()) {
+        // dd($form->getData());
+        $ingredient = $form->getData();
+        // dd($ingredient);
+        //On prépare pour l'envoit dans la bd comme un commit
+        $manager->persist($ingredient);
+         //On envoit dans la bd comme un push
+        $manager->flush();
+
+        //Message flash (de confirmation) sur symfony
+        $this->addFlash(
+            'success',
+            'Votre ingrédient a été modifié avec succes !'
+        );
+        //Rédirigeons l'utilisateur vers la page de tous les ingrédients
+       return $this->redirectToRoute('ingredient.index');
+    }else {
+        # code...
+    }
+        return $this->render('pages/ingredient/edit.html.twig', [
             'form' => $form->createView()
          ]);
     }
