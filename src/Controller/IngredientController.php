@@ -57,7 +57,6 @@ class IngredientController extends AbstractController
      */
 
     //POST DATA IN DB
-    //On a crée ingredientType (notre formulaire d'ingrédients) avec la cde php bin/console make:form,
     #[Route('/ingredient/nouveau', name: 'ingredient.new', methods:['GET', 'POST'])]
     public function new(
         Request $request,
@@ -96,7 +95,6 @@ class IngredientController extends AbstractController
     }
 
     //UPDATE DATA IN DB
-    //On a crée ingredientType (notre formulaire d'ingrédients) avec la cde php bin/console make:form,
     #[Route('/ingredient/edition/{id}', name: 'ingredient.edit', methods:['GET', 'POST'])]
     //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
     public function edit(
@@ -132,5 +130,38 @@ class IngredientController extends AbstractController
         return $this->render('pages/ingredient/edit.html.twig', [
             'form' => $form->createView()
          ]);
+    }
+
+    //DELETE DATA IN DB
+    #[Route('/ingredient/suppression/{id}', name: 'ingredient.delete', methods:['GET'])]
+    //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
+    public function delete(
+        Ingredient $ingredient, 
+        Request $request,
+        EntityManagerInterface $manager 
+    ) : Response 
+    {
+       if (!$ingredient)
+        {
+            //Message flash (de confirmation) sur symfony
+            $this->addFlash(
+                'success',
+                'L\'ingrédient en question n'/'a pas été supprimé !'
+            );
+            //Rédirigeons l'utilisateur vers la page de tous les ingrédients
+            return $this->redirectToRoute('ingredient.index');
+       }
+
+       $manager->remove($ingredient);
+       $manager->flush();
+
+       //Message flash (de confirmation) sur symfony
+       $this->addFlash(
+           'success',
+           'Votre ingrédient a été supprimé avec succes !'
+       );
+       //Rédirigeons l'utilisateur vers la page de tous les ingrédients
+       return $this->redirectToRoute('ingredient.index');
+
     }
 }
