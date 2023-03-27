@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipesRepository;
+use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -10,11 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: RecipesRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 //Pour éviter les recêttes de même 
 #[UniqueEntity('name')]
-class Recipes
+#[ORM\Entity(repositoryClass: RecipeRepository::class)]
+class Recipe
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -61,7 +60,7 @@ class Recipes
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: ingredient::class)]
+    #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
     public function __construct()
@@ -197,7 +196,7 @@ class Recipes
         return $this->ingredients;
     }
 
-    public function addIngredient(ingredient $ingredient): self
+    public function addIngredient(Ingredient $ingredient): self
     {
         if (!$this->ingredients->contains($ingredient)) {
             $this->ingredients->add($ingredient);
@@ -206,7 +205,7 @@ class Recipes
         return $this;
     }
 
-    public function removeIngredient(ingredient $ingredient): self
+    public function removeIngredient(Ingredient $ingredient): self
     {
         $this->ingredients->removeElement($ingredient);
 

@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Recipes;
+use App\Entity\Recipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Recipes>
+ * @extends ServiceEntityRepository<Recipe>
  *
- * @method Recipes|null find($id, $lockMode = null, $lockVersion = null)
- * @method Recipes|null findOneBy(array $criteria, array $orderBy = null)
- * @method Recipes[]    findAll()
- * @method Recipes[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Recipe|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Recipe|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Recipe[]    findAll()
+ * @method Recipe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RecipesRepository extends ServiceEntityRepository
+class RecipeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Recipes::class);
+        parent::__construct($registry, Recipe::class);
     }
 
-    public function save(Recipes $entity, bool $flush = false): void
+    public function save(Recipe $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class RecipesRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Recipes $entity, bool $flush = false): void
+    public function remove(Recipe $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class RecipesRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Recipes[] Returns an array of Recipes objects
+//     * @return Recipe[] Returns an array of Recipe objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class RecipesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Recipes
+//    public function findOneBySomeField($value): ?Recipe
 //    {
 //        return $this->createQueryBuilder('r')
 //            ->andWhere('r.exampleField = :val')
