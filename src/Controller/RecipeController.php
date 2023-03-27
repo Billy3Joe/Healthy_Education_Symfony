@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Repository\RecipeRepository;
+use App\Entity\Recipe;
+use App\Form\RecipeType;
 // use Doctrine\ORM\Tools\Pagination\Paginator;
+use App\Repository\RecipeRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,35 +47,15 @@ class RecipeController extends AbstractController
      #[Route('/recette/creation', name: 'recipe.new', methods:['GET', 'POST'])]
      public function new(
          Request $request,
-         EntityManagerInterface $manager 
+        //  EntityManagerInterface $manager 
      ) : Response 
      {
          //On crée un nouveau ingrédient
-         $ingredients = new Ingredient();
+         $recipe = new Recipe();
          //On crée le formulaire d'ajout
-         $form = $this->createForm(IngredientType::class, $ingredients);
+         $form = $this->createForm(RecipeType::class, $recipe);
  
-         $form->handleRequest($request);
-             // dd($form);
-         if ($form->isSubmitted() && $form->isValid()) {
-             // dd($form->getData());
-             $ingredient = $form->getData();
-             // dd($ingredient);
-             //On prépare pour l'envoit dans la bd comme un commit
-             $manager->persist($ingredient);
-              //On envoit dans la bd comme un push
-             $manager->flush();
- 
-             //Message flash (de confirmation) sur symfony
-             $this->addFlash(
-                 'success',
-                 'Votre ingrédient a été ajouté avec succes !'
-             );
-             //Rédirigeons l'utilisateur vers la page de tous les ingrédients
-            return $this->redirectToRoute('recipe.index');
-         }else {
-             # code...
-         }
+         
          return $this->render('pages/recipe/new.html.twig', [
              'form' => $form->createView()
           ]);
