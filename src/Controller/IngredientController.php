@@ -95,8 +95,17 @@ class IngredientController extends AbstractController
     }
 
     //UPDATE DATA IN DB
-    #[Route('/ingredient/edition/{id}', name: 'ingredient.edit', methods:['GET', 'POST'])]
+    /**
+     * This controller allow us to update an ingredient
+     *
+     * @param Ingredient $ingredient
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    
     //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
+    #[Route('/ingredient/edition/{id}', name: 'ingredient.edit', methods:['GET', 'POST'])]
     public function edit(
         Ingredient $ingredient, 
         Request $request,
@@ -133,8 +142,16 @@ class IngredientController extends AbstractController
     }
 
     //DELETE DATA IN DB
-    #[Route('/ingredient/suppression/{id}', name: 'ingredient.delete', methods:['GET'])]
+    /**
+     * This controller allow us to delete an ingredient
+     *
+     * @param Ingredient $ingredient
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+
     //NB: symfony ira seul réccupérer l'id de l'ingrédient dans la table Ingredient
+    #[Route('/ingredient/suppression/{id}', name: 'ingredient.delete', methods:['GET'])]
     public function delete(
         Ingredient $ingredient, 
         EntityManagerInterface $manager 
