@@ -59,8 +59,8 @@ class Recipe
     #[ORM\Column]
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\ManyToMany(targetEntity: Ingredient::class)]
+ 
+    #[ORM\ManyToMany(targetEntity: Ingredient::class) ]
     private Collection $ingredients;
 
     public function __construct()
