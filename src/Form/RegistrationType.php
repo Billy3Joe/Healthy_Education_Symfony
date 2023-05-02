@@ -10,9 +10,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class UserType extends AbstractType
+class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -47,14 +49,44 @@ class UserType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 50])
                 ]
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'minlenght' => '2',
+                    'maxlenght' => '180',
                 ],
-                'label' => 'Mot de passe',
+                'required' => false,
+                'label' => 'Adresse email',
                 'label_attr' => [
                     'class' => 'form-label  mt-4'
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                    new Assert\Length(['min' => 2, 'max' => 180])
                 ]
+            ])
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'label' => 'Mot de passe',
+                    'label_attr' => [
+                        'class' => 'form-label mt-4'
+                    ]
+                ],
+                'second_options' => [
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
+                    'label' => 'confirmation du mot de passe',
+                    'label_attr' => [
+                        'class' => 'form-label mt-4'
+                    ]
+                ],
+                'invalid_message' => 'Les mots de passe ne correspondent pas.'
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
@@ -70,4 +102,3 @@ class UserType extends AbstractType
         ]);
     }
 }
-

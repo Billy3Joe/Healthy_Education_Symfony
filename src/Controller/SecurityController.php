@@ -1,9 +1,10 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,7 +53,7 @@ class SecurityController extends AbstractController
         $user = new User();
         $user->setRoles(['ROLE_USER']);
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -74,3 +75,4 @@ class SecurityController extends AbstractController
         ]);
     }
 }
+
